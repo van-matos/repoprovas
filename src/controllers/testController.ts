@@ -9,3 +9,9 @@ export async function newTest(req: Request, res: Response) {
 
     return res.status(201).send({ message: "Test saved." });
 }
+
+export async function showTestsByDiscipline(req: Request, res: Response) {
+    const tests = await testService.getTestsGroupedDiscipline();
+
+    return res.status(201).send(tests);
+}

@@ -20,3 +20,9 @@ export async function newTest(test: ITestInsert) {
 
     return savedTest;
 }
+
+export async function getTestsGroupedDiscipline() {
+    const tests = await testRepository.groupTestsByDiscipline();
+    
+    return tests;
+}
