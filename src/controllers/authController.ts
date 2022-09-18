@@ -15,5 +15,5 @@ export async function login(req: Request, res: Response) {
 
     const token = await authService.login(email, password);
 
-    return res.status(200).send(token);
+    return res.status(200).send({ token });
 }

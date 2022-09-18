@@ -11,9 +11,9 @@ export async function validateToken(req: Request, res: Response, next: NextFunct
     if (!token)
         throw { status: 401, message: "Unauthorized."};
 
-    const payload = jwt.verify(token, process.env.JWT_SECRET as string) as authTypes.IJwtPayload;
+    const { id } = jwt.verify(token, process.env.JWT_SECRET as string) as authTypes.IJwtPayload;
 
-    res.locals.id = payload;
+    res.locals.id = id;
 
     next();
 }
