@@ -114,7 +114,70 @@ describe("GET /tests/by-discipline", () => {
         const result = await supertest(app).get(`/tests/by-discipline`).set({ Authorization: `Bearer ${response.body.token}`});
 
         expect(result.status).toBe(200); 
-        expect(result.body).toBeInstanceOf(Object);
+    })
+
+    it("If invalid token given, should return status code 500", async () => {
+        const user = await createUser();
+        await supertest(app).post(`/signup`).send(user);
+
+        const userLogin = { email: user.email, password: user.password };
+        const response = await supertest(app).post(`/login`).send(userLogin);
+
+        const result = await supertest(app).get(`/tests/by-discipline`).set({ Authorization: `Bearer ${response.body.token}a`});
+
+        expect(result.status).toBe(500);
+    });
+
+    it("If no request header, should return status code 401", async () => {
+        const user = await createUser();
+        await supertest(app).post(`/signup`).send(user);
+
+        const userLogin = { email: user.email, password: user.password };
+        const response = await supertest(app).post(`/login`).send(userLogin);
+
+        const test = await createTest();
+        const result = await supertest(app).get(`/tests/by-discipline`);
+
+        expect(result.status).toBe(401);
+    })
+})
+
+describe("GET /tests/by-teacher", () => {
+    it("If test retrieval successful, should return status code 200", async () => {
+        const user = await createUser();
+        await supertest(app).post(`/signup`).send(user);
+
+        const userLogin = { email: user.email, password: user.password };
+        const response = await supertest(app).post(`/login`).send(userLogin);
+
+        const result = await supertest(app).get(`/tests/by-teacher`).set({ Authorization: `Bearer ${response.body.token}`});
+
+        expect(result.status).toBe(200); 
+    })
+
+    it("If invalid token given, should return status code 500", async () => {
+        const user = await createUser();
+        await supertest(app).post(`/signup`).send(user);
+
+        const userLogin = { email: user.email, password: user.password };
+        const response = await supertest(app).post(`/login`).send(userLogin);
+
+        const result = await supertest(app).get(`/tests/by-teacher`).set({ Authorization: `Bearer ${response.body.token}a`});
+
+        expect(result.status).toBe(500);
+    });
+
+    it("If no request header, should return status code 401", async () => {
+        const user = await createUser();
+        await supertest(app).post(`/signup`).send(user);
+
+        const userLogin = { email: user.email, password: user.password };
+        const response = await supertest(app).post(`/login`).send(userLogin);
+
+        const test = await createTest();
+        const result = await supertest(app).get(`/tests/by-teacher`);
+
+        expect(result.status).toBe(401);
     })
 })
 
