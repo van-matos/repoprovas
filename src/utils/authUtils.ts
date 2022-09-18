@@ -9,6 +9,6 @@ export function verifyPassword(password: string, hashedPassword: string): boolea
     return bcrypt.compareSync(password, hashedPassword);
 }
 
-export const generateToken = (userId: number) => {
+export function generateToken(userId: number) {
     return jwt.sign({ userId }, String(process.env.JWT_SECRET), { expiresIn: "24h" });
 }
