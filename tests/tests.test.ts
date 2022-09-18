@@ -10,7 +10,7 @@ beforeEach(async () => {
     await connection.$executeRaw`TRUNCATE TABLE "users"`;
 });
 
-describe("Test POST /tests", () => {
+describe("POST /tests", () => {
     it("If given valid test, should return status code 201", async () => {
         const user = await createUser();
         await supertest(app).post(`/signup`).send(user);
@@ -102,6 +102,21 @@ describe("Test POST /tests", () => {
         expect(result.status).toBe(422);
     })
 });
+
+describe("GET /tests/by-discipline", () => {
+    it("If test retrieval successful, should return status code 200", async () => {
+        const user = await createUser();
+        await supertest(app).post(`/signup`).send(user);
+
+        const userLogin = { email: user.email, password: user.password };
+        const response = await supertest(app).post(`/login`).send(userLogin);
+
+        const result = await supertest(app).get(`/tests/by-discipline`).set({ Authorization: `Bearer ${response.body.token}`});
+
+        expect(result.status).toBe(200); 
+        expect(result.body).toBeInstanceOf(Object);
+    })
+})
 
 afterAll(async () => {
     await connection.$disconnect();

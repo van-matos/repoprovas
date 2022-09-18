@@ -13,5 +13,5 @@ export async function newTest(req: Request, res: Response) {
 export async function showTestsByDiscipline(req: Request, res: Response) {
     const tests = await testService.getTestsGroupedDiscipline();
 
-    return res.status(201).send(tests);
+    return res.status(200).send(tests);
 }
