@@ -15,3 +15,9 @@ export async function showTestsByDiscipline(req: Request, res: Response) {
 
     return res.status(200).send(tests);
 }
+
+export async function showTestsByTeacher(req: Request, res: Response) {
+    const tests = await testService.getTestsGroupedTeacher();
+
+    return res.status(200).send(tests);
+}

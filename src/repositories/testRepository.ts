@@ -7,17 +7,14 @@ export async function insertNewTest(test: ITestRequest) {
 
 export async function groupTestsByDiscipline() {
     const tests = await connection.term.findMany({
-        distinct: ["id"],
         select: {
             number: true,
             Discipline: {
-                distinct: ["name"],
                 select: {
                     name: true,
                     TeacherDiscipline: {
                         select: {
                             Test: {
-                                distinct: ["categoryId"],
                                 select: {
                                     id: true,
                                     name: true,
@@ -29,6 +26,36 @@ export async function groupTestsByDiscipline() {
                                                     name: true
                                                 }
                                             }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    });
+
+    return tests;
+}
+
+export async function groupTestsByTeacher() {
+    const tests = await connection.teacher.findMany({
+        select: {
+            name: true,
+            TeacherDiscipline: {
+                select: {
+                    Test: {
+                        select: {
+                            id: true,
+                            name: true,
+                            pdfUrl: true,
+                            TeacherDiscipline: {
+                                select: {
+                                    Discipline: {
+                                        select: {
+                                            name: true
                                         }
                                     }
                                 }
