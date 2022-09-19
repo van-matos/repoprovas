@@ -4,10 +4,10 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "build": "tsc && npx prisma migrate deploy",
+    "build": "tsc && npx prisma generate && npx prisma migrate deploy && npx prisma db seed",
     "dev": "nodemon src/server.ts",
     "start": "node dist/src/server.js",
-    "test": "jest --no-cache"
+    "test": "dotenv -e .env.test prisma migrate dev && dotenv -e .env.test prisma db seed && dotenv -e .env.test -- jest -i"
   },
   "repository": {
     "type": "git",
@@ -47,5 +47,8 @@
     "joi": "^17.6.0",
     "jsonwebtoken": "^8.5.1",
     "nodemon": "^2.0.20"
+  },
+  "prisma": {
+    "seed": "ts-node prisma/seed.ts"
   }
 }
